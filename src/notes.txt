@@ -1,0 +1,124 @@
+节点与动作
+
+节点Node
+
+成员
+
+顶点： vertices { A R G B pos }
+
+position 初始值 0 
+anchor 锚点 0.5
+scale 1.0
+opacity 1.0
+size 所有顶点的占地
+
+关于节点的测量方法 为可以包含所有顶点的范围
+
+其他控制标记：
+visibility
+tag
+
+
+parent node
+children vector
+
+actions
+
+渲染方法： 
+step (long millisecTimestamp);
+draw (int[] buf);
+
+ctor:
+
+Node(vertices, ...);
+Node(xml);
+Node(position, vertices, ...);
+Node(position, xml);
+
+属性存取器：
+float getPosition();
+void setPosition(float);
+
+float getAnchor();
+void setAnchor(float);
+
+float getScale();
+void setScale(float);
+
+float getOpacity();
+void setOpacity();
+
+float getVisible();
+void setVisible(boolean);
+
+测量：
+float getContentSize();
+
+String getTag();
+void setTag();
+
+
+节点继承控制：
+Node getParent();
+void addChild(Node);
+Node getChildByTag(String);
+List<Node> getChildren();
+
+void removeFromParent();
+void removeChildByTag();
+void removeAllChildren();
+
+动作控制：
+Action runningAction();
+Action getActionByTag();
+void stopActionByTag();
+void stopAction();
+void stopAll();
+void runAction(Action);
+
+
+动作家族：
+
+ActionBase 抽象类
+
+float millisecDuration;
+long millisecElapsed; ??
+long lastMillisecTimestamp; ??
+int repeatCount;
+boolean autoreverse;
+Node target;
+
+子类需复写方法： void step(long millisecTimestamp);
+
+
+ActionInstance: Show Hide: visibility
+
+ActionInverval:
+
+MoveBy MoveTo: position
+FadeIn FadeOut FadeInOut: opacity
+ScaleTo ScaleBy: scale
+Sequence
+
+
+
+光栅化 Rasterization
+Bresenham直线光栅化算法
+http://blog.csdn.net/shenshucong520/article/details/49155415
+
+光栅化的边界情况
+当节点的顶点退化为两个坐标相同的点，其渲染算法保持不变而不用退化。
+或者两个顶点之间的距离小于1.0
+
+
+
+简单的抗锯齿算法 Anti-Aliasing
+http://blog.csdn.net/fishmai/article/details/61916766
+
+我们主要面临的问题是“子像素失真“ (Sub-Pixel Aliasing)
+方法：基于采样的抗锯齿
+
+
+
+颜色混合
+http://www.cnblogs.com/mfryf/p/3401503.html
